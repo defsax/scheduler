@@ -22,20 +22,21 @@ export function getAppointmentsForDay(state, day) {
 export function getInterviewersForDay(state, day) {
 
   let interviewersForDay = [];
+  console.log('\n', 'state', state, '\n\nday',day);
 
   const filteredDays = state.days.filter((currentDay) => {
-    return currentDay.name === day
+    return currentDay.name === day;
   });
   
   if (!filteredDays.length)
     return filteredDays;
   else {
-    const filteredInterviewers = filteredDays[0].appointments.filter((id) => {
-      return id === state.appointments[id].id;
+    const filteredInterviewers = filteredDays[0].interviewers.filter((id) => {
+      return id === state.interviewers[id].id;
     });
     
     filteredInterviewers.forEach((id) => {
-      interviewersForDay.push(state.appointments[id])
+      interviewersForDay.push(state.interviewers[id])
     });
   }
   return interviewersForDay;
