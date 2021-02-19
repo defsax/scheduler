@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function useVisualMode(initial) {
+export const useVisualMode = (initial) => {
   const [mode, setMode] = useState(initial);
   const [history, setHistory] = useState([initial]);
 
@@ -12,11 +12,9 @@ export default function useVisualMode(initial) {
         //last the last element from the previous state then push on newMode   
         prev.pop();
         prev.push(mode);
-        // return [...prev, newMode]
         return [...prev];
       });
     } else {
-
       setMode(newMode);
       setHistory((prev) => {
         return [...prev, newMode]
