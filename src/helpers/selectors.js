@@ -12,17 +12,39 @@ export function getAppointmentsForDay(state, day) {
       return id === state.appointments[id].id;
     });
     
-    filteredAppointments.forEach((appointment) => {
-      appointmentsForDay.push(state.appointments[appointment])
+    filteredAppointments.forEach((id) => {
+      appointmentsForDay.push(state.appointments[id])
     });
   }
   return appointmentsForDay;
 }
 
+export function getInterviewersForDay(state, day) {
+
+  let interviewersForDay = [];
+
+  const filteredDays = state.days.filter((currentDay) => {
+    return currentDay.name === day
+  });
+  
+  if (!filteredDays.length)
+    return filteredDays;
+  else {
+    const filteredInterviewers = filteredDays[0].appointments.filter((id) => {
+      return id === state.appointments[id].id;
+    });
+    
+    filteredInterviewers.forEach((id) => {
+      interviewersForDay.push(state.appointments[id])
+    });
+  }
+  return interviewersForDay;
+}
+
 export function getInterview(state, interview) {
   if (interview === null)
     return null;
-    
+
   return {
     student: interview.student,
     interviewer: {
