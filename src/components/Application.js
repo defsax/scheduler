@@ -14,6 +14,48 @@ export default function Application(props) {
     appointments: {}
   });
 
+  function bookInterview(id, interview) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+    
+    return axios.put(`/api/appointments/${id}`, {interview})
+    .then(() => {
+      setState({...state, appointments});
+    })
+    .catch((err) => console.log(err));
+
+  };  
+
+  function deleteInterview(id) {
+
+    const appointment = {
+      ...state.appointments[id],
+      interview: null 
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+
+    console.log(appointment, appointments);
+    
+    console.log('delete interview');
+    return axios.delete(`/api/appointments/${id}`)
+    .then(() => {
+      setState({...state, appointments});
+    })
+    .catch((err) => console.log(err));
+
+  };
+
   const setDay = (day) => setState({ ...state, day });
 
   useEffect(() => {
@@ -26,16 +68,12 @@ export default function Application(props) {
       GET_APPOINTMENTS,
       GET_INTERVIEWERS,
     ]).then((all) => {
-      console.log(all); 
       setState((prev) => ({ 
         ...prev, 
         days: all[0].data, 
         appointments: all[1].data, 
         interviewers: all[2].data 
       }));
-
-      console.log('appointments', state.appointments); // second
-      console.log('state', state);
     });
   }, []);
 
@@ -49,7 +87,9 @@ export default function Application(props) {
         id={appointment.id}
         time={appointment.time}
         interview={interview}
-        interviewers={interviewersList}
+        interviewers={interviewersList} 
+        bookInterview={bookInterview}
+        cancelInterview={deleteInterview}
       />
     )
   });
