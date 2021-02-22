@@ -22,7 +22,6 @@ export function getAppointmentsForDay(state, day) {
 export function getInterviewersForDay(state, day) {
 
   let interviewersForDay = [];
-  console.log('\n', 'state', state, '\n\nday',day);
 
   const filteredDays = state.days.filter((currentDay) => {
     return currentDay.name === day;
