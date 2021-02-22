@@ -19,19 +19,16 @@ export default function useApplicationData() {
       console.log('Incorrect.');
       return;
     }
-    console.log('currentday:',currentDay, 'alldays:',allDays);
+
+    
+    //get day ID
+    //minus 1 because ids are not zero based
     let dayID = allDays.filter(day => {
       return day.name === currentDay;
     })[0].id - 1;
 
-    console.log('bookedDay(id)', dayID);
-    //minus 1 because ids are not zero based
-    console.log('state.days[bookedday - 1] ', state.days[dayID]);
-
-    console.log('spots before:', state.days[dayID].spots);
-    let spots = state.days[dayID].spots += value;
-    console.log('spots after:', spots);
-
+    //modify number of spots
+    let spots = (state.days[dayID].spots += value);
 
     //reconstruct object
     const updatedDay = {
@@ -39,20 +36,16 @@ export default function useApplicationData() {
       spots: spots
     };
 
-    console.log('updatedday',updatedDay);
-
     const daysObj = {
       ...state.days,
       [dayID]: updatedDay
     };
 
+    //push reconstructed objects into an array to match data
     let days = [];
     for (let i of Object.values(daysObj)) {
       days.push(i);
     }
-
-    console.log('state.days', state.days);
-    console.log('all days updated', days);
 
     setState({
       ...state,
