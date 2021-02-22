@@ -23,11 +23,13 @@ export function useVisualMode(initial) {
   }
   const back = () => {
     //we can only go back if history length array is greater than 1
-    if (history.length > 1) {
+    if (history.length >= 1) {
     
       //pop last pushed element from history and set mode to prev element
-      history.pop()
-      setMode(history[history.length - 1]);
+      const newHistory = [...history];
+      newHistory.pop();
+      setMode(newHistory[newHistory.length - 1]);
+      setHistory(newHistory);
     }
   }
 

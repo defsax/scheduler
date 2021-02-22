@@ -29,7 +29,7 @@ export default function Application(props) {
     .then(() => {
       setState({...state, appointments});
     })
-    .catch((err) => console.log(err));
+    // .catch((err) => console.log('error in bookInterview',err));
 
   };  
 
@@ -52,7 +52,7 @@ export default function Application(props) {
     .then(() => {
       setState({...state, appointments});
     })
-    .catch((err) => console.log(err));
+    // .catch((err) => console.log(err));
 
   };
 
