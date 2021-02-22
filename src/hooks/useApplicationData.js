@@ -9,48 +9,40 @@ export default function useApplicationData() {
     appointments: {}
   });
 
-  const updateSpots = function(currentDay, allDays, operation) {
-    let value = 0;
-    if (operation === 'add') {
-      value = -1;
-    } else if (operation === 'sub') {
-      value = 1;
-    } else {
-      console.log('Incorrect.');
-      return;
-    }
+  const updateSpots = function(state, appointments, id) {
+ 
+    let spotsAvailable = 0;
+    // console.log('appointments:', appointments,'state:', state,'id:', id);
 
-    
     //get day ID
-    //minus 1 because ids are not zero based
-    let dayID = allDays.filter(day => {
-      return day.name === currentDay;
-    })[0].id - 1;
+    let dayID = state.days.filter(day => {
+      return day.name === state.day;
+    })[0].id;
 
-    //modify number of spots
-    let spots = (state.days[dayID].spots += value);
+    //we have appointment id. go through state.days.appointments to see if theres a match.
+    //if there is, return state.days.id, which will be current day id
+    
+    //we have day id, so we can get that day's appointments
+    //minus 1 because day ids are not zero based
+    let appointmentsForDay = state.days[dayID - 1].appointments;
 
-    //reconstruct object
-    const updatedDay = {
-      ...state.days[dayID],
-      spots: spots
-    };
-
-    const daysObj = {
-      ...state.days,
-      [dayID]: updatedDay
-    };
-
-    //push reconstructed objects into an array to match data
-    let days = [];
-    for (let i of Object.values(daysObj)) {
-      days.push(i);
+    //loop day's appointments
+    for (let appointment of appointmentsForDay) {
+      //if all appointments at appointment (id)'s interview is null, increment spots
+      if (appointments[appointment].interview === null) {
+        spotsAvailable++;
+      }
     }
 
-    setState({
-      ...state,
-      days
-    });
+    //reconstruct days object with updated spots
+    const days = state.days.map((day) => {
+			if (day.id === dayID) {
+        return { ...day, spots: spotsAvailable}
+      }
+				return day;
+		});
+
+    return days;
   };
 
   function bookInterview(id, interview) {
@@ -64,11 +56,10 @@ export default function useApplicationData() {
       [id]: appointment
     };
     
+    let days = updateSpots(state, appointments, id);
     return axios.put(`/api/appointments/${id}`, {interview})
     .then(() => {
-      updateSpots(state.day, state.days, 'add');
-      setState({...state, appointments});
-      console.log('state.days.spots:', state.days.spots);
+      setState({...state, appointments, days});
     })
   };  
 
@@ -86,11 +77,10 @@ export default function useApplicationData() {
       [id]: appointment
     };
 
+    let days = updateSpots(state, appointments, id);
     return axios.delete(`/api/appointments/${id}`)
     .then(() => {
-      updateSpots(state.day, state.days, 'sub');
-      setState({...state, appointments});
-      console.log('state.days.spots:', state.days.spots);
+      setState({...state, appointments, days});
     })
 
   };
