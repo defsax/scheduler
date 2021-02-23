@@ -11,11 +11,10 @@ export default function useApplicationData() {
 
   const updateSpots = function(state, appointments, id) {
  
-    let spotsAvailable = 0;
     // console.log('appointments:', appointments,'state:', state,'id:', id);
 
     //get day ID
-    let dayID = state.days.filter(day => {
+    const dayID = state.days.filter(day => {
       return day.name === state.day;
     })[0].id;
 
@@ -24,9 +23,11 @@ export default function useApplicationData() {
     
     //we have day id, so we can get that day's appointments
     //minus 1 because day ids are not zero based
-    let appointmentsForDay = state.days[dayID - 1].appointments;
+    const appointmentsForDay = state.days[dayID - 1].appointments;
 
     //loop day's appointments
+    let spotsAvailable = 0;
+
     for (let appointment of appointmentsForDay) {
       //if all appointments at appointment (id)'s interview is null, increment spots
       if (appointments[appointment].interview === null) {
@@ -37,9 +38,10 @@ export default function useApplicationData() {
     //reconstruct days object with updated spots
     const days = state.days.map((day) => {
 			if (day.id === dayID) {
-        return { ...day, spots: spotsAvailable}
+        return { ...day, spots: spotsAvailable }
       }
-				return day;
+			
+      return day;
 		});
 
     return days;
@@ -56,7 +58,7 @@ export default function useApplicationData() {
       [id]: appointment
     };
     
-    let days = updateSpots(state, appointments, id);
+    const days = updateSpots(state, appointments, id);
     return axios.put(`/api/appointments/${id}`, {interview})
     .then(() => {
       setState({...state, appointments, days});
