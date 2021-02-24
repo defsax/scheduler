@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import Header from "components/Appointment/Header";
 import Show from "components/Appointment/Show";
@@ -33,7 +33,6 @@ export default function Appointment(props) {
     transition(SAVING);
     props.bookInterview(props.id, interview)
       .then(() => {
-        console.log('PUT COMPLETE');
         transition(SHOW);
       })
       .catch((err) => {
@@ -46,7 +45,6 @@ export default function Appointment(props) {
     transition(DELETING, true);
     props.cancelInterview(props.id)
       .then(() => {
-        console.log('DELETE COMPLETE');
         transition(EMPTY);
       })
       .catch((err) => {
@@ -57,7 +55,10 @@ export default function Appointment(props) {
 
   const { mode, transition, back } = useVisualMode(props.interview ? SHOW : EMPTY);
   return (
-    <article className="appointment">
+    <article 
+      className="appointment"
+      data-testid="appointment"
+    >
       <Header time={props.time}/>
       
       {mode === ERROR_SAVE && 
