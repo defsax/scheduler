@@ -28,3 +28,8 @@ npm run storybook
 ```sh
 npm run cypress
 ```
+
+## Screenshots
+!["example view"](https://raw.githubusercontent.com/defsax/scheduler/master/docs/default_view.png)
+!["creation form"](https://raw.githubusercontent.com/defsax/scheduler/master/docs/edit_create_appointment.png)
+!["appointment shown"](https://raw.githubusercontent.com/defsax/scheduler/master/docs/appointment_card.png)
