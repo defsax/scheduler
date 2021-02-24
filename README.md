@@ -1,5 +1,7 @@
 # Interview Scheduler
 
+Interview Scheduler is a Single Page Application (SPA) primarily built using React. 
+
 ## Setup
 
 Install dependencies with `npm install`.
@@ -20,4 +22,9 @@ npm test
 
 ```sh
 npm run storybook
+```
+
+## Running Cypress
+```sh
+npm run cypress
 ```
