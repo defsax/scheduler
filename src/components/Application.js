@@ -1,6 +1,5 @@
 import React from "react";
 import DayList from "components/DayList";
-// import axios from "axios";
 
 import "components/Application.scss";
 import Appointment from "components/Appointment"

@@ -48,7 +48,7 @@ describe("Form", () => {
   
   it("can successfully save after trying to submit an empty student name", () => {
     const onSave = jest.fn();
-    const { debug, getByText, getByPlaceholderText, queryByText, getByAltText } = render(
+    const { getByText, getByPlaceholderText, queryByText, getByAltText } = render(
       <Form interviewers={interviewers} onSave={onSave} />
     );
   
@@ -60,7 +60,6 @@ describe("Form", () => {
     fireEvent.change(getByPlaceholderText("Enter Student Name"), {
       target: { value: "Lydia Miller-Jones" }
     });
-    debug();
     fireEvent.click(getByAltText("Sylvia Palmer"));
   
     fireEvent.click(getByText("Save"));
